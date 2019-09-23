@@ -28,14 +28,14 @@ Also, I wirte a method updateUTXOPool to update UTXOPool. After finding every va
 
 I write createUTXOPoolAndTx class to create data for test. I firstly generate data to create valid trasactions and UTXOPool then change some transaction to make it has error to prepare data for tests.<br>
 
-1. First, I write some methods to create transaction.<br>
-  • sign: To get signature<br> <br> 
+1. First, I write some methods to create transaction.<br> <br>
+  • sign: To get signature<br> 
   • createUsersKeyPair: To get public key and private key for users<br>
   • getOutput: To generate outputs. (Since Transaction.Output is not static, Cannot generate output randomly. Need to use this function to create a fictitious old transaction(those outputs are actually not in one transaction,but here we assume they are in one transaction in this method)<br>
   • createNewUTXOPool: To generate UTXOPool according to outputs<br>
   • newTx: To generate new transactions<br>
 
-2. Second, I generate data and use function in 1 to generate valid trasactions and UTXOPool by using method start(). And the following are the explaination of variables. Those variables can be changed in method start(), and then transactions and UTXOPool can be generated<br> <br> 
+2. Second, I generate data and use function in 1 to generate valid trasactions and UTXOPool by using method start(). And the following are the explaination of variables. Those variables can be changed in method start(), and then transactions and UTXOPool can be generated.<br> <br>
   • int totalOutputNumber: The size of all outputs of txs that are already confirmed.<br>
   • int usersNumber: Users in these txs (including old txs and new txs)<br>
   • ArrayList<KeyPair> users: Keys for users(created by createUTXOPoolAndTx.createUsersKeyPair)<br>
@@ -53,7 +53,7 @@ I create before() and test1() to test11() to do test. <br>
   • test1()~test10() use createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator separately to get data<br>
   • test1() ~ test8() test isValid() method<br>
   • test 9() and test10() test handleTxs() method: some valid txs that depend on each other, which means that their inputs may be output of txs which may not be confirmed yet while test1() ~ test8() test transactions which are independent and all the inputs are outputs from tx that already be confirmed.<br>
-  • test1() will test the situation that the input tx[] is empty.<br>
+  • test11() will test the situation that the input tx[] is empty.<br>
 More information is in the table(the result in the table is just for  the transaction with error, other valid tx is still valid).<br>
 
  Method Name | Purpose | Content  | Important Result(only the transaction with error)
@@ -62,7 +62,7 @@ More information is in the table(the result in the table is just for  the transa
  test2  | Test requirement (1) in isValid |Assume that outputs not in the current UTXO pool since corresponding preTxHash in UTXO Pool is different| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
  test3  | Test requirement (1) in isValid |Double spending in different transaction can lend to the result that do not satisfies (1). PreTxHash/Index or both of them are not in the current UTXP pool | isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
  test4  | Test requirement (2) in isValid |The signature is not accordance with message| isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
- test5  | Test requirement (2) in isValid |The signature is not accordance with address | isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
+ test5  | Test requirement (2) in isValid |The signature is not accordance with address | isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
  test6  | Test requirement (3) in isValid |Double spending in the same transaction.| isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:False<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
  test7  | Test requirement (4) in isValid |Output values are negative| isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:True<br> nonNegative:False<br>sumOfOutput:True<br>cannot return by handleTxs  
  test8  | Test requirement (5) in isValid |The sum of input values is not greater than or equal to the sum of its output values | isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:False<br>cannot return by handleTxs 
