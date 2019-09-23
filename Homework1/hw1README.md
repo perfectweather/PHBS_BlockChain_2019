@@ -70,7 +70,7 @@ More information is in the table(the result in the table is just for  the transa
  test10  | Test handleTxs | Some txs that depend on each other. Assume txA depend on txB and txC, txB is valid but txC is not valid(Assume txB and txC have double spending) | txA and tx C cannot return by handleTxs
  test11  | Test empty input | the input tx[] is empty | handleTxs result is tx[]
 
-PS:Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test1 ~ test3
+PS:Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(), we do not test signIsTrue and nonNegative in test1 ~ test3
 
 
 
