@@ -29,35 +29,35 @@ Also, I wirte a method updateUTXOPool to update UTXOPool. After finding every va
 I write createUTXOPoolAndTx class to create data for test. I firstly generate data to create valid trasactions and UTXOPool then change some transaction to make it has error to prepare data for tests.<br>
 
 1. First, I write some methods to create transaction.<br>
-  •sign: To get signature<br>
-  •createUsersKeyPair: To get public key and private key for users<br>
-  •getOutput: To generate outputs. (Since Transaction.Output is not static, Cannot generate output randomly. Need to use this function to create a fictitious old transaction(those outputs are actually not in one transaction,but here we assume they are in one transaction in this method)<br>
-  •createNewUTXOPool: To generate UTXOPool according to outputs<br>
-  •newTx: To generate new transactions<br>
+  • sign: To get signature<br> <br> 
+  • createUsersKeyPair: To get public key and private key for users<br>
+  • getOutput: To generate outputs. (Since Transaction.Output is not static, Cannot generate output randomly. Need to use this function to create a fictitious old transaction(those outputs are actually not in one transaction,but here we assume they are in one transaction in this method)<br>
+  • createNewUTXOPool: To generate UTXOPool according to outputs<br>
+  • newTx: To generate new transactions<br>
 
-2. Second, I generate data and use function in 1 to generate valid trasactions and UTXOPool by using method start(). And the following are the explaination of variables. Those variables can be changed in method start(), and then transactions and UTXOPool can be generated<br>
-int totalOutputNumber: The size of all outputs of txs that are already confirmed.<br>
-int usersNumber: Users in these txs (including old txs and new txs)<br>
-ArrayList<KeyPair> users: Keys for users(created by createUTXOPoolAndTx.createUsersKeyPair)<br>
-int oldTxNumber: The number of txs that are already confirmed<br>
-int maxvalue: The max value of an output<br>
-int newTxNumber: The number of new txs<br>
-HashMap<Integer, int[]> inAndOutNumberOfNewTx: the integer is the index of new tx, and for every int[], the int[0] is number of input of the new tx,int[1] is number of output of the new tx(the size of the first dimension is the number of new txs(newTxNumber), it should be larger than 3. The sum of all input of new tx can not be larger than totalOutputNumber)<br>
+2. Second, I generate data and use function in 1 to generate valid trasactions and UTXOPool by using method start(). And the following are the explaination of variables. Those variables can be changed in method start(), and then transactions and UTXOPool can be generated<br> <br> 
+  • int totalOutputNumber: The size of all outputs of txs that are already confirmed.<br>
+  • int usersNumber: Users in these txs (including old txs and new txs)<br>
+  • ArrayList<KeyPair> users: Keys for users(created by createUTXOPoolAndTx.createUsersKeyPair)<br>
+  • int oldTxNumber: The number of txs that are already confirmed<br>
+  • int maxvalue: The max value of an output<br>
+  • int newTxNumber: The number of new txs<br>
+  • HashMap<Integer, int[]> inAndOutNumberOfNewTx: the integer is the index of new tx, and for every int[], the int[0] is number of input of the new tx,int[1] is number of output of the new tx(the size of the first dimension is the number of new txs(newTxNumber), it should be larger than 3. The sum of all input of new tx can not be larger than totalOutputNumber)<br>
 
 3.Third, I create method createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator to change some transaction to make it has error and prepare data for tests.<br>    
 
 ### Test Meathod<br>
 
 I create before() and test1() to test11() to do test. <br>
-•before() is used to generate txs without error and test valid txs(do not depend on each) can be judged to valid(isValid == True). <br>
-•test1()~test10() use createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator separately to get data<br>
-•test1() ~ test8() test isValid() method<br>
-•test 9() and test10() test handleTxs() method: some valid txs that depend on each other, which means that their inputs may be output of txs which may not be confirmed yet while test1() ~ test8() test transactions which are independent and all the inputs are outputs from tx that already be confirmed.<br>
-•test1() will test the situation that the input tx[] is empty.<br>
+  • before() is used to generate txs without error and test valid txs(do not depend on each) can be judged to valid(isValid == True). <br>
+  • test1()~test10() use createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator separately to get data<br>
+  • test1() ~ test8() test isValid() method<br>
+  • test 9() and test10() test handleTxs() method: some valid txs that depend on each other, which means that their inputs may be output of txs which may not be confirmed yet while test1() ~ test8() test transactions which are independent and all the inputs are outputs from tx that already be confirmed.<br>
+  • test1() will test the situation that the input tx[] is empty.<br>
 More information is in the table(the result in the table is just for  the transaction with error, other valid tx is still valid).<br>
 
  Method Name | Purpose | Content  | Important Result(only the transaction with error)
- ---- | ----- | ------  
+ ---- | ----- | ------ | ------ 
  test1  | Test requirement (1) in isValid|Assume that outputs not in the current UTXO pool since corresponding index in UTXO Pool is different| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
  test2  | Test requirement (1) in isValid |Assume that outputs not in the current UTXO pool since corresponding preTxHash in UTXO Pool is different| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
  test3  | Test requirement (1) in isValid |Double spending in different transaction can lend to the result that do not satisfies (1). PreTxHash/ Index or both of them are not in the current UTXP pool.
