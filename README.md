@@ -3,12 +3,12 @@ Name: Zhou Yutian<br>
 ID: 1801212996
 
 ## Homework Solution:<br>
-1. * Use UTXOPool(UTXOPool uPool) to construct object TxHandle, which has a feature "private UTXOPool utxoPool".<br>
-2. * Create five method to verify the five requirements when verify the transation.<br>
+1.  Use UTXOPool(UTXOPool uPool) to construct object TxHandle, which has a feature "private UTXOPool utxoPool".<br>
+2.  Create five method to verify the five requirements when verify the transation.<br>
 
  Method  | Function  | Result
  ---- | ----- | ------  
- inCuUTXOpool  | verify (1) all outputs claimed by {@code tx} are in the current UTXO pool| True: satify (1)<br>False: not satify(1) 
+ inCuUTXOpool  | verify (1) all outputs claimed by {@code tx} are in <br>the current UTXO pool| True: satify (1)<br>False: not satify(1) 
  单元格内容  | 单元格内容 | 单元格内容 
   UTXOPool utxoPool
      * {@code utxoPool}. This should make a copy of utxoPool by using the UTXOPool(UTXOPool uPool)
