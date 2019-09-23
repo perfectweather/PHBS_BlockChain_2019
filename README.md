@@ -6,30 +6,14 @@ ID: 1801212996
 1.  Use UTXOPool(UTXOPool uPool) to construct object TxHandle, which has a feature "private UTXOPool utxoPool".<br>
 2.  Create five method to verify the five requirements when verify the transation.<br>
 
- Method  | Function  | Result
+ Method Name | Function  | Result
  ---- | ----- | ------  
- inCuUTXOpool  | verify (1) all outputs claimed by {@code tx} are in <br>the current UTXO pool| True: satify (1)<br>False: not satify(1) 
- 单元格内容  | 单元格内容 | 单元格内容 
-  UTXOPool utxoPool
-     * {@code utxoPool}. This should make a copy of utxoPool by using the UTXOPool(UTXOPool uPool)
-     * {@code utxoPool}. This should make a copy of utxoPool by using the UTXOPool(UTXOPool uPool)
-    /**
-     * @return true if:
-     * (1) all outputs claimed by {@code tx} are in the current UTXO pool,
-     * (2) the signatures on each in put of {@code tx} are valid,
-     * (3) no UTXO is claimed multiple times by {@code tx},
-     * (4) all of {@code tx}s output values are non-negative, and
-     * (5) the sum of {@code tx}s input values is greater than or equal to the sum of its output
-     *     values; and false otherwise.
-     */
-    public boolean isValidTx(Transaction tx) {
-         //IMPLEMENT THIS
-        if (inCuUTXOpool(tx) == true && signIsTrue(tx) == true && notMulti(tx) == true && nonNegative(tx) == true && sumOfOutput(tx) == true){
-            return true;
-        }
-        return false;
-    }
-
+ inCuUTXOpool  | Verify (1) all outputs claimed by tx are in the current UTXO pool| True: satify (1)<br>False: not satify(1) 
+ signIsTrue  | Verify (2) the signatures on each in put of tx are valid| True: satify (2)<br>False: not satify(2) 
+ notMulti  | Verify (3) no UTXO is claimed multiple times by tx| True: satify (3)<br>False: not satify(3) 
+ nonNegative  | Verify (4) all of txs output values are non-negative| True: satify (4)<br>False: not satify(4) 
+ sumOfOutput  | Verify (5) the sum of txs input values is greater than or equal to the sum of its output value| True: satify (5)<br>False: not satify(5) 
+ 
 
 
 ## Test
