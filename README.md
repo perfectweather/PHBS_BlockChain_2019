@@ -12,8 +12,8 @@ ID: 1801212996
  signIsTrue  | Verify (2) the signatures on each in put of tx are valid| True: satify (2)<br>False: not satify(2) 
  notMulti  | Verify (3) no UTXO is claimed multiple times by tx| True: satify (3)<br>False: not satify(3) 
  nonNegative  | Verify (4) all of txs output values are non-negative| True: satify (4)<br>False: not satify(4) 
- sumOfOutput  | Verify (5) the sum of txs input values is greater than or equal to the sum of its output value| True: satify (5)<br>False: not satify(5) 
- 
+ sumOfOutput  | Verify (5) the sum of txs input values is greater than or equal to the<br> sum of its output value| True: satify (5)<br>False: not satify(5) 
+ isValidTx  | Verify (1) - (5) | True: five method above all return True<br>False: else
 
 
 ## Test
