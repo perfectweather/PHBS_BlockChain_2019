@@ -19,14 +19,14 @@ This design will help to find which part goes wrong when doing the test.<br>
  isValidTx  | Verify (1) - (5) | True: five method above all return True<br>False: else
 
 3.  handleTxs: Since transactions may depend on each other, use "do - while" to judge whether transaction is vaild untill the number of "not valid transation" do not change after judge all "not valid transation".<br>
-Also, I wirte a method updateUTXOPool to update UTXOPool. After finding every valid transaction, this method will be used once. 
+Also, I wirte a method updateUTXOPool to update UTXOPool. After finding every valid transaction, this method will be used once. <br>
 
 
-## Test
+## Test<br>
 
 ### Create Data<br>
 
-I write createUTXOPoolAndTx class to create data for test. I firstly generate data to create valid trasactions and then change some transaction to make it has error to prepare data for tests.<br>
+I write createUTXOPoolAndTx class to create data for test. I firstly generate data to create valid trasactions and UTXOPool then change some transaction to make it has error to prepare data for tests.<br>
 
 1. First, I write some methods to create transaction.<br>
   •sign: To get signature<br>
@@ -35,140 +35,43 @@ I write createUTXOPoolAndTx class to create data for test. I firstly generate da
   •createNewUTXOPool: To generate UTXOPool according to outputs<br>
   •newTx: To generate new transactions<br>
 
-2. Second
-2. Secon
-     * fictitious transaction(those outputs are not in one transaction to get outputs,but here we assume they are in one transaction)
-    public static UTXOPool createNewUTXOPool(int totalOutputNumber, ArrayList<KeyPair> users, int maxValue, int oldTxNumber, HashMap<UTXO, Integer> UTXOFindOwners, HashMap<Transaction.Output, Integer> findOwners, HashMap<UTXO, byte[]> findOldTx) {
-        if (oldTxNumber > 10) {
-            System.out.println("oldTxNumber cannot be greater than 10");
-            assert false;
-        }
-        UTXOPool utxoPool = new UTXOPool();
-        byte[][] txHash = new byte[oldTxNumber][256];
-        for (int i = 0; i < oldTxNumber; i++) {
-            java.util.Arrays.fill(txHash[i], (byte) i);
-        }
-        Transaction getOutput = getOutput(totalOutputNumber, users, maxValue, findOwners);
-        for (int i = 0; i < totalOutputNumber; i++) {
-            Random random = new Random();
-            int j = (int) (Math.random() * oldTxNumber);
-            UTXO utxo = new UTXO(txHash[j], i);
-            findOldTx.put(utxo, txHash[j]);
-            int u = findOwners.get(getOutput.getOutput(i));
-            UTXOFindOwners.put(utxo, u);
-            utxoPool.addUTXO(utxo, getOutput.getOutput(i));
-        }
-        return utxoPool;
-    }
+2. Second, I generate data and use function in 1 to generate valid trasactions and UTXOPool by using method start(). And the following are the explaination of variables. Those variables can be changed in method start(), and then transactions and UTXOPool can be generated<br>
+int totalOutputNumber: The size of all outputs of txs that are already confirmed.<br>
+int usersNumber: Users in these txs (including old txs and new txs)<br>
+ArrayList<KeyPair> users: Keys for users(created by createUTXOPoolAndTx.createUsersKeyPair)<br>
+int oldTxNumber: The number of txs that are already confirmed<br>
+int maxvalue: The max value of an output<br>
+int newTxNumber: The number of new txs<br>
+HashMap<Integer, int[]> inAndOutNumberOfNewTx: the integer is the index of new tx, and for every int[], the int[0] is number of input of the new tx,int[1] is number of output of the new tx(the size of the first dimension is the number of new txs(newTxNumber), it should be larger than 3. The sum of all input of new tx can not be larger than totalOutputNumber)<br>
 
-    //get newTx
-    public static Transaction[] newTx(HashMap<Integer, int[]> inAndOutNumberOfNewTx, UTXOPool utxoPool, HashMap<UTXO, Integer> findNewTx, ArrayList<KeyPair> users, HashMap<UTXO, Integer> UTXOFindOwners) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        ArrayList<Transaction> newTx = new ArrayList<Transaction>();
-        ArrayList<UTXO> UTXOs = utxoPool.getAllUTXO();
-        for (int i = 0; i < inAndOutNumberOfNewTx.size(); i++) {
-            double sumValueOfInput = 0.0;
-            double v = 0.0;
-            Transaction tempNewTx = new Transaction();
-            //int key = i + 1;
-            int[] number = inAndOutNumberOfNewTx.get(i);
-            ArrayList UTXOOfNewTxi = new ArrayList<UTXO>();
-            for (int j = 0; j < number[0]; j++) {
-                Random random = new Random();
-                int k = (int) (Math.random() * UTXOs.size());
-                UTXO tempUtxo = UTXOs.get(k);
-                findNewTx.put(tempUtxo, i);
-                tempNewTx.addInput(tempUtxo.getTxHash(), tempUtxo.getIndex());
-                UTXOOfNewTxi.add(tempUtxo);
-                //if(j < number[0]-1) {
-                sumValueOfInput += utxoPool.getTxOutput(tempUtxo).value;
-                UTXOs.remove(k);
-            }
-            for (int j = 0; j < number[1]; j++) {
-                Random random = new Random();
-                int u = (int) (Math.random() * users.size());
-                PublicKey address = users.get(u).getPublic();
-                //int j = random.nextInt(oldTxNumber);
-                //int u = random.nextInt(users);
-                //double v = sumValueOfInput / number[1];
-                v = sumValueOfInput / (2 * number[1]);
-                tempNewTx.addOutput(v, address);
-            }
-            for (int j = 0; j < number[0]; j++) {
-                byte[] rawData = tempNewTx.getRawDataToSign(j);
-                PrivateKey privateKey = users.get(UTXOFindOwners.get(UTXOOfNewTxi.get(j))).getPrivate();
-                tempNewTx.addSignature(sign(privateKey, rawData), j);
-            }
-            tempNewTx.finalize();
-            newTx.add(tempNewTx);
-        }
-        return newTx.toArray(new Transaction[newTx.size()]);
-    }
-
-
-    
-
-    //test1：(1).1, not all outputs claimed by {@code tx} are in the current UTXO pool.
-    // Assume that outputs not in the current UTXO pool since corresponding index in UTXO Pool is different.
-    public static createUTXOPoolAndTx test1Generator
-
-    /**generate txs without errors by using method createUTXOPoolAndTx.createNewUTXOPool to create UTXO Pool
-     * and method createUTXOPoolAndTx.newTx to create txs.
-     */
-    public static createUTXOPoolAndTx start() throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-        //totalOutputNumber: the size of all outputs of txs that are already confirmed.
-        int totalOutputNumber = 30;
-        //usersNumber:Users in these txs
-        int usersNumber = 10;
-        //create keys for users
-        ArrayList<KeyPair> users = createUTXOPoolAndTx.createUsersKeyPair(usersNumber);
-        //the maxvalue of an output
-        int maxValue = 10;
-        //the number of txs that are already confirmed
-        int oldTxNumber = 5;
-        //the number of new txs
-        int newTxNumber = 6;
-        //the first dimension is number of input of the new tx, the second dimension is the number of output of the new tx
-        // the size of the first dimension is the number of new txs(newTxNumber), it should be larger than 3.
-        int[][] number = {{2, 3}, {2, 3}, {5, 7}, {6, 2}, {5, 4},{3,4}};
-        //use utxo to find the owner of this input(output of old tx)
-        HashMap<UTXO, Integer> UTXOFindOwners = new HashMap<UTXO, Integer>();
-        //use output to find the owner of this output
-        HashMap<Transaction.Output, Integer> findOwners = new HashMap<Transaction.Output, Integer>();
-        //use utxo to find the hash of old tx
-        HashMap<UTXO, byte[]> findOldTx = new HashMap<UTXO, byte[]>();
-        //use utxo to find the hash of new tx
-        HashMap<UTXO, Integer> findNewTx = new HashMap<UTXO, Integer>();
-        //inAndOutNumberOfNewTx:the integer is the index of new tx, and the int[0] is number of input of the new tx,int[1] is number of output of the new tx
-        //the sum of all input of new tx can not be larger than totalOutputNumber
-        HashMap<Integer, int[]> inAndOutNumberOfNewTx = new HashMap<Integer, int[]>();
-        for (int i = 0; i < newTxNumber; i++) {
-            inAndOutNumberOfNewTx.put(i, number[i]);
-        }
-        UTXOPool utxoPool = createUTXOPoolAndTx.createNewUTXOPool(totalOutputNumber, users, maxValue, oldTxNumber, UTXOFindOwners, findOwners, findOldTx);
-        TxHandler txHandler = new TxHandler(utxoPool);
-        Transaction[] newTx = createUTXOPoolAndTx.newTx(inAndOutNumberOfNewTx, utxoPool, findNewTx, users, UTXOFindOwners);
-        createUTXOPoolAndTx create = new createUTXOPoolAndTx(utxoPool, newTx, inAndOutNumberOfNewTx, users);
-        return create;
-    }
-
-    
+3.Third, I create method createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator to change some transaction to make it has error and prepare data for tests.<br>    
 
 ### Test Meathod<br>
 
-before
-miaoshu
+I create before() and test1() to test11() to do test. <br>
+•before() is used to generate txs without error and test valid txs(do not depend on each) can be judged to valid(isValid == True). <br>
+•test1()~test10() use createUTXOPoolAndTx.test1Generator ~ createUTXOPoolAndTx.test10Generator separately to get data<br>
+•test1() ~ test8() test isValid() method<br>
+•test 9() and test10() test handleTxs() method: some valid txs that depend on each other, which means that their inputs may be output of txs which may not be confirmed yet while test1() ~ test8() test transactions which are independent and all the inputs are outputs from tx that already be confirmed.<br>
+•test1() will test the situation that the input tx[] is empty.<br>
+More information is in the table(the result in the table is just for  the transaction with error, other valid tx is still valid).<br>
 
-Test1：<br>
-Used for test the requirement (1) in isValid: (1) not all outputs claimed by are in the current UTXO pool.<br>
-Assume that not all outputs not in the current UTXO pool since corresponding index in UTXO Pool is different.<br><br>
-Result: <br>
-Except the tx I change
-txHandler.isValidTx(invalidTx[0]) is False
-txHandler.isValidTx(inCuUTXOpool[0]) is False
-txHandler.isValidTx(notMulti[0]) is True
-txHandler.isValidTx(nonNegative[0]) is True
+ Method Name | Purpose | Content  | Important Result(only the transaction with error)
+ ---- | ----- | ------  
+ test1  | Test requirement (1) in isValid|Assume that outputs not in the current UTXO pool since corresponding index in UTXO Pool is different| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
+ test2  | Test requirement (1) in isValid |Assume that outputs not in the current UTXO pool since corresponding preTxHash in UTXO Pool is different| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
+ test3  | Test requirement (1) in isValid |Double spending in different transaction can lend to the result that do not satisfies (1). PreTxHash/ Index or both of them are not in the current UTXP pool.
+| isValidTx:False<br>inCuUTXOpool:False<br>notMulti:True<br> nonNegative:True<br>cannot return by handleTxs 
+ test4  | Test requirement (2) in isValid |The signature is not accordance with message| isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
+ test5  | Test requirement (2) in isValid |The signature is not accordance with address | isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
+ test6  | Test requirement (3) in isValid |Double spending in the same transaction.| isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:True<br>notMulti:False<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
+ test7  | Test requirement (4) in isValid |Output values are negative| isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:True<br>notMulti:True<br> nonNegative:False<br>sumOfOutput:True<br>cannot return by handleTxs  
+ test8  | Test requirement (5) in isValid |The sum of input values is not greater than or equal to the sum of its output values | isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:True<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:False<br>cannot return by handleTxs 
+ test9  | Test handleTxs | Some txs that depend on each other and all txs are valid | return by handleTxs 
+ test10  | Test handleTxs | Some txs that depend on each other. Assume txA  depend on txB and txC, txB is valid but txC is not valid(Assume txB and txC have double spending) | txA and tx C cannot return by handleTxs
+ test11  | Test empty input | the input tx[] is empty | handleTxs result is tx[]
 
-
+PS:Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test1 ~ test3
 
 
 
