@@ -65,9 +65,9 @@ More information is in the table(the result in the table is just for  the transa
  test5  | Test requirement (2) in isValid |The signature is not accordance with address | isValidTx:False<br>inCuUTXOpool:Truee<br>signIsTrue:False<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
  test6  | Test requirement (3) in isValid |Double spending in the same transaction.| isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:False<br> nonNegative:True<br>sumOfOutput:True<br>cannot return by handleTxs 
  test7  | Test requirement (4) in isValid |Output values are negative| isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:True<br> nonNegative:False<br>sumOfOutput:True<br>cannot return by handleTxs  
- test8  | Test requirement (5) in isValid |The sum of input values is not greater than or equal to the sum of its output values | isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:False<br>cannot return by handleTxs 
- test9  | Test handleTxs | Some txs that depend on each other and all txs are valid | return by handleTxs 
- test10  | Test handleTxs | Some txs that depend on each other. Assume txA  depend on txB and txC, txB is valid but txC is not valid(Assume txB and txC have double spending) | txA and tx C cannot return by handleTxs
+ test8  | Test requirement (5) in isValid |The sum of input values is not greater than or equal to<br> the sum of its output values | isValidTx:False<br>inCuUTXOpool:True<br>signIsTrue:True<br>notMulti:True<br> nonNegative:True<br>sumOfOutput:False<br>cannot return by handleTxs 
+ test9  | Test handleTxs | Some txs that depend on each other and all txs are<br> valid | return by handleTxs 
+ test10  | Test handleTxs | Some txs that depend on each other. Assume txA<br> depend on txB and txC, txB is valid but txC is not valid(Assume txB and txC have double spending) | txA and tx C cannot return by handleTxs
  test11  | Test empty input | the input tx[] is empty | handleTxs result is tx[]
 
 PS:Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test1 ~ test3
