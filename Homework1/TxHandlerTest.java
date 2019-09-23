@@ -54,7 +54,7 @@ public class TxHandlerTest {
         }
         Transaction[] result1 = txHandler.handleTxs(validTx);
         assertEquals(result1,validTx);
-        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test1
+        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(), we do not test signIsTrue and nonNegative in test1
         assertFalse(txHandler.isValidTx(invalidTx[0]));
         assertFalse(txHandler.inCuUTXOpool(invalidTx[0]));
         assertTrue("this tx is invalid",txHandler.notMulti(invalidTx[0]));
@@ -84,7 +84,7 @@ public class TxHandlerTest {
         }
         Transaction[] result1 = txHandler.handleTxs(validTx);
         assertEquals(result1,validTx);
-        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test2
+        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(), we do not test signIsTrue and nonNegative in test2
         assertFalse(txHandler.isValidTx(invalidTx[0]));
         assertFalse(txHandler.inCuUTXOpool(invalidTx[0]));
         assertTrue("this tx is invalid",txHandler.notMulti(invalidTx[0]));
@@ -113,7 +113,7 @@ public class TxHandlerTest {
         }
         Transaction[] result1 = txHandler.handleTxs(validTx);
         assertEquals(result1,validTx);
-        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(1), we do not test signIsTrue and nonNegative in test3
+        //Since signature is true and sum of output is smaller than sum of input need to find output in UTXO pool,the realization depend on output in UTXOPool(), we do not test signIsTrue and nonNegative in test3
         assertFalse(txHandler.isValidTx(invalidTx[0]));
         assertFalse(txHandler.inCuUTXOpool(invalidTx[0]));
         assertTrue("this tx is invalid",txHandler.notMulti(invalidTx[0]));
