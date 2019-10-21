@@ -40,9 +40,9 @@ I test function  addBlock（including hasPreBlockHashAndNotGenesis
   <tr><td>test a coinbase transaction of a block is available to be spent in the next block mined on top of it by adding a block whose transaction use the output of coinbase in the pre block.</td><td>test10</td></tr> 
   <tr><td>adding a new block with transaction has been in other blocks(transaction are not in transactionPool)</td><td>test11</td></tr> 
   <tr><td>test addTransaction </td><td>add two transaction to transactionPool and test wheather tests are in transactionPool </td><td>test1</td></tr> 
-  <tr><td>getMaxHeightBlock </td><td>when blockchain only has genesisBlock return genesisblock</td><td>test2</td></tr> 
-  <tr><td>getMaxHeightUTXOPool </td><td>when blockchain only has genesisBlock return an empty UTXOPool</td><td>test3</td></tr> 
-  <tr><td>clear </td><td>when the CUT_OFF_AGE = 1 and the highest block height is 4 the blocks with height 2 should be delete </td><td>test11</td></tr> 
+  <tr><td>test getMaxHeightBlock </td><td>when blockchain only has genesisBlock return genesisblock</td><td>test2</td></tr> 
+  <tr><td>test getMaxHeightUTXOPool </td><td>when blockchain only has genesisBlock return an empty UTXOPool</td><td>test3</td></tr> 
+  <tr><td>test clear </td><td>when the CUT_OFF_AGE = 1 and the highest block height is 4 the blocks with height 2 should be delete </td><td>test12</td></tr> 
 </table>   
 </escape>  
 
