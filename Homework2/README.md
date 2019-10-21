@@ -25,18 +25,24 @@ Also, highestNode need to be updated if adding block on the highest block.
 I design tests to test function in BlockChina to keep BlockChinaHanlder can be executed correctly.<br>
 
 
-I test function  addBlock(Block block)（including hasPreBlockHashAndNotGenesis 
- heightRight and txsValid）addTransaction(Transaction tx) getMaxHeightBlock()，getMaxHeightUTXOPool() and clear(）respectively
- Purpose | Detail 
- ---- | -----  
-  hasPreBlockHashAndNotGenesis | to verify block is not another genesis block and it has a parent block 
- heightRight  | to verify block should be at height > (maxHeight - CUT_OFF_AGE)
-              | to verify all transactions is valid
-<escape>  ##此代码起头
+I test function  addBlock（including hasPreBlockHashAndNotGenesis 
+ heightRight and txsValid,）addTransaction, getMaxHeightBlock, getMaxHeightUTXOPool and clear respectively
+
+<escape>  
 <table>    
-  <tr><th>xxx</th><th>xxx</th><th>xxx</th></tr>   ##表头
-  <tr><td rowspan="2">xxx</td><td>xxx</td><td>xxx</td></tr>   ##下面的列表1
-  <tr><td>xxx</td><td>xxx</td></tr>   ##下面的列表2
+  <tr><th>Purpose</th><th>Detail</th><th>testName</th></tr>   
+  <tr><td rowspan="8">test addBlock </td><td>adding a new block on the highest block (genesis block), and the highestNode should be unpdated</td><td>test4</td></tr>  
+  <tr><td>adding a new block on genesis block(not the highest block), and the highestNode should not be unpdated</td><td>test5</td></tr>   
+  <tr><td>test hasPreBlockHashAndNotGenesis by adding another genesis block</td><td>test6</td></tr> 
+  <tr><td>test hasPreBlockHashAndNotGenesis by adding a block without pre block</td><td>test7</td></tr> 
+  <tr><td>test heightRight by adding a new block on the block whose height <= than maxheight - cut off age) </td><td>test8</td></tr> 
+  <tr><td>test txsValid by adding a new block whose transaction are not all valid</td><td>test9</td></tr> 
+  <tr><td>test a coinbase transaction of a block is available to be spent in the next block mined on top of it by adding a block whose transaction use the output of coinbase in the pre block.</td><td>test10</td></tr> 
+  <tr><td>adding a new block with transaction has been in other blocks(transaction are not in transactionPool)</td><td>test11</td></tr> 
+  <tr><td>test addTransaction </td><td>add two transaction to transactionPool and test wheather tests are in transactionPool </td><td>test1</td></tr> 
+  <tr><td>getMaxHeightBlock </td><td>when blockchain only has genesisBlock return genesisblock</td><td>test2</td></tr> 
+  <tr><td>getMaxHeightUTXOPool </td><td>when blockchain only has genesisBlock return an empty UTXOPool</td><td>test3</td></tr> 
+  <tr><td>clear </td><td>when the CUT_OFF_AGE = 1 and the highest block height is 4 the blocks with height 2 should be delete </td><td>test11</td></tr> 
 </table>   
-</escape>  ##结束
+</escape>  
 
