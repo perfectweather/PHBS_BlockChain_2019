@@ -31,6 +31,6 @@ I test function  addBlock(Block block)（including hasPreBlockHashAndNotGenesis
  ---- | -----  
   hasPreBlockHashAndNotGenesis | to verify block is not another genesis block and it has a parent block 
  heightRight  | to verify block should be at height > (maxHeight - CUT_OFF_AGE)
-| to verify all transactions is valid
+              | to verify all transactions is valid
 
 
